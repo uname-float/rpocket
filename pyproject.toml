@@ -11,6 +11,8 @@ psycopg2-binary = "^2.9.9"
 flake8 = "^7.0.0"
 black = "^24.4.2"
 mypy = "^1.10.0"
+fastapi = "^0.111.0"
+uvicorn = "^0.29.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.2"
