@@ -13,6 +13,7 @@ def test_add_credit_card():
             "python",
             "rpocket/cli.py",
             "add-credit-card",
+            "add_card_name",
             "1234567812345678",
             "2024-12-31",
             "Mario Rossi",

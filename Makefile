@@ -29,9 +29,10 @@ run:
 	@echo "  add-credit-card    Aggiunge una carta di credito"
 	@echo ""
 	@echo "Esempio:"
-	@echo "  make run add-credit-card 1234567812345678 2024-12-31 'Mario Rossi' 123 'Carta di credito principale'"
+	@echo "  make run add-credit-card 1234567812345678 'Revolut' 2024-12-31 'Mario Rossi' 123 'Carta di credito principale'"
 	@poetry run rpocket/cli.py add-credit-card \
 		1234567812345678 \
+		"Revolut" \
         2024-12-31 \
     	"Mario Rossi" \
         123 \

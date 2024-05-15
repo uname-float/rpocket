@@ -2,7 +2,10 @@
 
 import typer
 import psycopg2
+import getpass
+
 from psycopg2 import Error
+from crypto_utils import generate_key, encrypt_cvv, decrypt_cvv
 
 # Connessione al database PostgreSQL
 def connect():
@@ -22,15 +25,26 @@ def connect():
 app = typer.Typer()
 
 @app.command()
-def add_credit_card(card_number: str, expiration_date: str, owner_name: str, cvv: str, notes: str):
+def add_credit_card(card_number: str, card_name: str, expiration_date: str, owner_name: str, cvv: str, notes: str):
 
     # Qui inserisci la logica per aggiungere la carta di credito nel database
     connection = connect()
     cursor = connection.cursor()
+
+    # Ottieni la password dall'utente in modo sicuro
+    #password = getpass.getpass("Inserisci la password per crittare cvv: ")
+    password = "Blacking1"
+
+    # Genera la chiave utilizzando la funzione generate_key
+    key = generate_key(password)
+
+    # Utilizza la chiave per crittare il CIV
+    encrypted_cvv = encrypt_cvv(cvv, key)
+
     try:
         cursor.execute(
-            "INSERT INTO credit_card (card_number, expiration_date, owner_name, cvv, notes) VALUES (%s, %s, %s, %s, %s) RETURNING id",
-            (card_number, expiration_date, owner_name, cvv, notes),
+            "INSERT INTO credit_card (card_number, card_name, expiration_date, owner_name, cvv, notes) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id",
+            (card_number, card_name, expiration_date, owner_name, encrypted_cvv, notes),
         )
         credit_card_id = cursor.fetchone()[0]
         connection.commit()
@@ -62,7 +76,6 @@ def add_subscription(
     finally:
         cursor.close()
         connection.close()
-
 
 # Comando per visualizzare tutti gli abbonamenti
 @app.command()
